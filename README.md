@@ -7,7 +7,7 @@ If you want use this configuration you must also provide some additional files:
 - `users/registry` htpasswd file to access to registry
 
 Also this configuration provide static nginx server by
-[lux](github.com/gudn/lux). You can place projects under `/static/projects`
+[lux](https://github.com/gudn/lux). You can place projects under `/static/projects`
 directory. For enable static also add additional docker-compose file and run
 like this:
 
