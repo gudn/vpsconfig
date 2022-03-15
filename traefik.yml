@@ -16,7 +16,7 @@ certificatesResolvers:
     acme:
       httpChallenge:
         entryPoint: web
-      storage: /acme.json
+      storage: /acme/acme.json
 
 http:
   routers:

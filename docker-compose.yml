@@ -15,7 +15,7 @@ services:
     - 5001
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
-    - ./acme.json:/acme.json
+    - acme:/acme
     - ./users:/users:ro
     - ./traefik.yml:/etc/traefik/traefik.yml:ro
     environment:
@@ -54,5 +54,6 @@ networks:
 
 
 volumes:
+  acme:
   registry_data:
     external: true
