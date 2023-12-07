@@ -1,11 +1,10 @@
 version: "3"
 
-
 services:
   traefik:
     container_name: traefik
-    image: traefik:2.6
-    restart: always
+    image: traefik:2.10
+    restart: unless-stopped
     networks:
     - intranet
     ports:
@@ -15,23 +14,21 @@ services:
     - 5001
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
-    - acme:/acme
-    - ./users:/users:ro
     - ./traefik.yml:/etc/traefik/traefik.yml:ro
+    - ./users:/users:ro
+    - acme:/acme
     environment:
       TRAEFIK_CERTIFICATESRESOLVERS_LERESOLVE_ACME_EMAIL: ${EMAIL}
     labels:
     - "traefik.enable=true"
+    - "traefik.http.routers.traefik.service=api@internal"
     - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
     - "traefik.http.routers.traefik.entrypoints=websecure"
-    - "traefik.http.routers.traefik.tls.certresolver=leresolver"
     - "traefik.http.routers.traefik.middlewares=admin-auth"
-    - "traefik.http.routers.traefik.service=api@internal"
-    - "traefik.http.middlewares.admin-auth.digestauth.usersfile=/users/admin"
   registry:
     container_name: registry
     image: registry:2
-    restart: always
+    restart: unless-stopped
     networks:
     - intranet
     expose:
@@ -43,15 +40,12 @@ services:
     - "traefik.enable=true"
     - "traefik.http.routers.registry.rule=Host(`registry.${DOMAIN}`)"
     - "traefik.http.routers.registry.entrypoints=websecure"
-    - "traefik.http.routers.registry.tls.certresolver=leresolver"
-    - "traefik.http.routers.registry.middlewares=registry-auth"
-    - "traefik.http.middlewares.registry-auth.basicauth.usersfile=/users/registry"
+    - "traefik.http.routers.registry.middlewares=admin-auth"
 
 
 networks:
   intranet:
     external: true
-
 
 volumes:
   acme:

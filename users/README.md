@@ -1,1 +1,1 @@
-This folder should contains htdigest and htaccess files for services
+Place `htpasswd`-generated admin file here.

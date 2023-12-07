@@ -1,5 +1,3 @@
 /users/*
 !/users/README.md
 .env
-/static/projects/*
-/static/docker-compose.yml

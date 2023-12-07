@@ -1,34 +1,16 @@
 This is my one host VPS configuration for personal projects. It uses traefik as
-reverse proxy and docker-compose for configuration description.
+reverse proxy and docker-compose for configuration description. Commonly, main
+feature is support for automatic certificate resolving (thanks to traefik).
 
 If you want use this configuration you must also provide some additional files:
 - `.env` file with DOMAIN and EMAIL (for ACME) variables
-- `users/admin` htdigest file for access to traefik dashboard
-- `users/registry` htpasswd file to access to registry
+- `users/admin` htpasswd file for access to traefik dashboard and registry
 
-Also this configuration provide static nginx server by
-[lux](https://github.com/gudn/lux). You can place projects under `/static/projects`
-directory. For enable static also add additional docker-compose file and run
-like this:
-
-``` sh
-docker-compose -f docker-compose.yml -f static/docker-compose.yml
-```
-
-Example of `static/docker-compose.yml`:
-
-``` yaml
-version: '3'
-
-services:
-  static:
-    container_name: static
-    build: ./static
-    networks:
-    - intranet
-    labels:
-    - "traefik.enable=true"
-    - "traefik.http.routers.static.rule=Host(`static.example.com`)"
-    - "traefik.http.routers.static.entrypoints=websecure"
-    - "traefik.http.routers.static.tls.certresolver=leresolver"
-```
+# Setup
+1. Setup docker daemon on target machine
+2. Clone this repository
+3. Create admin credentials: `docker run --rm -it httpd:alpine -n $(whoami)` and
+   put it into `users/admin`
+4. `docker network create intranet`
+5. `docker volume create registry_data`
+6. `docker compose up -d`

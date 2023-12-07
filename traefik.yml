@@ -6,30 +6,36 @@ entrypoints:
         entryPoint:
           to: websecure
           scheme: https
+          permanent: true
   websecure:
     address: ':443'
+    tls:
+      certResolver: leresolve
   metrics:
     address: ':5001'
 
 certificatesResolvers:
-  leresolver:
+  leresolve:
     acme:
+      storage: /acme/acme.json
       httpChallenge:
         entryPoint: web
-      storage: /acme/acme.json
 
 http:
-  routers:
-    http-catchall:
-      rule: hostregexp(`{host:.+}`)
-      entryPoints: web
-      middlewares:
-      - redirect-to-https
+  # routers:
+  #   http-catchall:
+  #     rule: hostregexp(`{host:.+}`)
+  #     entryPoints: web
+  #     middlewares:
+  #     - redirect-to-https
   middlewares:
-    redirect-to-https:
-      redirectScheme:
-        scheme: https
-        permanent: true
+    admin-auth:
+      basicAuth:
+        usersFile: /users/admin
+    # redirect-to-https:
+    #   redirectScheme:
+    #     scheme: https
+    #     permanent: true
 
 api:
   dashboard: true
