@@ -15,6 +15,7 @@ services:
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
     - ./traefik.yml:/etc/traefik/traefik.yml:ro
+    - ./dynamic.yml:/rules/dynamic.yml:ro
     - ./users:/users:ro
     - acme:/acme
     environment:
@@ -24,7 +25,7 @@ services:
     - "traefik.http.routers.traefik.service=api@internal"
     - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
     - "traefik.http.routers.traefik.entrypoints=websecure"
-    - "traefik.http.routers.traefik.middlewares=admin-auth"
+    - "traefik.http.routers.traefik.middlewares=admin-auth@file"
   registry:
     container_name: registry
     image: registry:2
@@ -40,7 +41,7 @@ services:
     - "traefik.enable=true"
     - "traefik.http.routers.registry.rule=Host(`registry.${DOMAIN}`)"
     - "traefik.http.routers.registry.entrypoints=websecure"
-    - "traefik.http.routers.registry.middlewares=admin-auth"
+    - "traefik.http.routers.registry.middlewares=admin-auth@file"
 
 
 networks:

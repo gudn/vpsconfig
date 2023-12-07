@@ -9,8 +9,9 @@ entrypoints:
           permanent: true
   websecure:
     address: ':443'
-    tls:
-      certResolver: leresolve
+    http:
+      tls:
+        certResolver: leresolve
   metrics:
     address: ':5001'
 
@@ -21,28 +22,15 @@ certificatesResolvers:
       httpChallenge:
         entryPoint: web
 
-http:
-  # routers:
-  #   http-catchall:
-  #     rule: hostregexp(`{host:.+}`)
-  #     entryPoints: web
-  #     middlewares:
-  #     - redirect-to-https
-  middlewares:
-    admin-auth:
-      basicAuth:
-        usersFile: /users/admin
-    # redirect-to-https:
-    #   redirectScheme:
-    #     scheme: https
-    #     permanent: true
-
 api:
   dashboard: true
 
 providers:
   docker:
     exposedByDefault: false
+  file:
+    filename: /rules/dynamic.yml
+    watch: false
 
 log:
   level: INFO

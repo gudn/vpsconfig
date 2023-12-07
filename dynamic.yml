@@ -1,0 +1,5 @@
+http:
+  middlewares:
+    admin-auth:
+      basicAuth:
+        usersFile: /users/admin
