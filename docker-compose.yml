@@ -51,9 +51,9 @@ services:
     - intranet
     labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.registry.rule=Host(`gudn.link`) && Headers(`X-Proxy-Magic`, `${PROXY_MAGIC}`)"
-    - "traefik.http.routers.registry.entrypoints=websecure"
-    - "traefik.http.routers.registry.middlewares=proxy-auth@file"
+    - "traefik.http.routers.proxy.rule=Host(`gudn.link`) && Headers(`X-Proxy-Magic`, `${PROXY_MAGIC}`)"
+    - "traefik.http.routers.proxy.entrypoints=websecure"
+    - "traefik.http.routers.proxy.middlewares=proxy-auth@file"
 
 networks:
   intranet:
