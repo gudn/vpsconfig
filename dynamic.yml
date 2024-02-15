@@ -3,3 +3,7 @@ http:
     admin-auth:
       basicAuth:
         usersFile: /users/admin
+    proxy-auth:
+      digestAuth:
+        realm: proxy
+        usersFile: /users/proxy

@@ -42,7 +42,18 @@ services:
     - "traefik.http.routers.registry.rule=Host(`registry.${DOMAIN}`)"
     - "traefik.http.routers.registry.entrypoints=websecure"
     - "traefik.http.routers.registry.middlewares=admin-auth@file"
-
+  tinyproxy:
+    image: monokal/tinyproxy
+    command: ANY
+    expose:
+    - 8888
+    networks:
+    - intranet
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.registry.rule=Host(`gudn.link`) && Headers(`proxy`, `${PROXY_MAGIC}`)"
+    - "traefik.http.routers.registry.entrypoints=websecure"
+    - "traefik.http.routers.registry.middlewares=proxy-auth@file"
 
 networks:
   intranet:
