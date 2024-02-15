@@ -3,7 +3,7 @@ version: "3"
 services:
   traefik:
     container_name: traefik
-    image: traefik:2.10
+    image: traefik:2.11
     restart: unless-stopped
     networks:
     - intranet
@@ -51,9 +51,10 @@ services:
     - intranet
     labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.proxy.rule=Host(`gudn.link`) && Headers(`X-Proxy-Magic`, `${PROXY_MAGIC}`)"
+    - "traefik.http.routers.proxy.rule=Headers(`X-Proxy-Magic`, `${PROXY_MAGIC}`)"
     - "traefik.http.routers.proxy.entrypoints=websecure"
-    - "traefik.http.routers.proxy.middlewares=proxy-auth@file"
+    profiles:
+    - proxy
 
 networks:
   intranet:
