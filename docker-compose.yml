@@ -42,16 +42,17 @@ services:
     - "traefik.http.routers.registry.rule=Host(`registry.${DOMAIN}`)"
     - "traefik.http.routers.registry.entrypoints=websecure"
     - "traefik.http.routers.registry.middlewares=admin-auth@file"
-  tinyproxy:
-    image: monokal/tinyproxy
-    command: ANY
+  proxypass:
+    image: registry.${DOMAIN}/proxypass:1
+    restart: unless-stopped
     expose:
-    - 8888
+    - 8080
     networks:
     - intranet
     labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.proxy.rule=Headers(`X-Proxy-Magic`, `${PROXY_MAGIC}`)"
+    - "traefik.http.routers.proxy.rule=Host(`${DOMAIN}`) || Headers(`Proxy-Authorization`, `Basic ${PROXY_AUTH}`)"
+    - "traefik.http.routers.proxy.priority=1"
     - "traefik.http.routers.proxy.entrypoints=websecure"
     profiles:
     - proxy
