@@ -51,7 +51,7 @@ services:
     - intranet
     labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.proxy.rule=(!Host(`${DOMAIN}`)) || Headers(`Proxy-Authorization`, `Basic ${PROXY_AUTH}`)"
+    - "traefik.http.routers.proxy.rule=(Host(`${DOMAIN}`) && !Host(`${DOMAIN}`)) || Headers(`Proxy-Authorization`, `Basic ${PROXY_AUTH}`)"
     - "traefik.http.routers.proxy.priority=1"
     - "traefik.http.routers.proxy.entrypoints=websecure"
     profiles:
