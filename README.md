@@ -9,7 +9,7 @@ If you want use this configuration you must also provide some additional files:
 # Setup
 1. Setup docker daemon on target machine
 2. Clone this repository
-3. Create admin credentials: `docker run --rm -it httpd:alpine -n $(whoami)` and
+3. Create admin credentials: `docker run --rm -it httpd:alpine htpasswd -n $(whoami)` and
    put it into `users/admin`
 4. Specify `DOMAIN` and `EMAIL` env vars (you can use `.env` file)
 5. `docker network create intranet`
@@ -30,6 +30,8 @@ labels:
 
 > Note that `DOMAIN` env var may be not accessed from your personal compose
 > files
+
+> Note that router name (in example `registry`) must be unique across all containers
 
 All routers with `websecure` endpoint will get certificate from LetsEncrypt
 based on `Host` rules.
